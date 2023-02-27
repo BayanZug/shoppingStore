@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="fragments :: html_head(pageTitle='Shopping Cart')" />
+
+
+<body>
+
+<!-- <div th:replace="/fragments/header :: navbar"/> -->
+	<div th:replace="fragments :: header"></div>
+
+<div class="container-fluid text-center">
+
+    <h1 class="jumbotron">
+        <span sec:authentication="name"></span>'s Shopping Cart
+    </h1>
+
+    <div class="alert alert-info" th:if="${outOfStockMessage}" th:utext="${outOfStockMessage}"></div>
+
+    <div class="panel-default well" th:each="product : ${products.entrySet()}">
+        <div class="panel-heading">
+            <h1><a th:text="${product.getKey().name}" th:href="@{'/product/' + ${product.getKey().id}}">Title</a></h1>
+<!--             <h3 th:text="${product.getKey().description}">Description</h3> -->
+        </div>
+        <div class="row panel-body">
+            <div th:inline="text" class="col-md-2">Price: [[${product.getKey().getDiscountPrice()}]] $</div>
+            <div th:inline="text" class="col-md-9">Quantity: [[${product.getValue()}]]</div>
+            <a th:href="@{'/shoppingCart/removeProduct/{id}'(id=${product.getKey().id})}" class="col-md-1">
+                <button type="button" class="btn btn-primary" th:text="Remove">Remove</button>
+            </a>
+        </div>
+        <br></br>
+    </div>
+
+    <div class="row panel-body">
+        <h2 class="col-md-5" th:inline="text">Total: [[${total}]]<span th:text="${session.currency}"> currency</span></h2>
+        <div class="col-md-2">
+          <a th:if="${totalNum>0}"  sec:authorize="isAuthenticated()"  th:href="@{'/shoppingCart/pay'}" >
+            <button type="button" class="btn btn-sm btn-outline-primary" th:text="Pay">Pay</button>
+        </a>
+        <a th:if="${totalNum>0}"    th:href="@{/shoppingCart/removeAll}" >
+            <button type="button" class="btn btn-sm btn-outline-primary" >Remove all</button>
+        </a>
+        </div>
+      
+         <a class="col-md-2"  th:href="@{/}">
+        	<button type="button"  class="btn btn-sm btn-primary" >Continue shopping</button>
+        </a>
+        <div class="col-md-3  d-inline-block" sec:authorize="!isAuthenticated()">
+        <a class=" "   th:href="@{/registration}">
+        	<button type="button"  class="btn  btn-sm btn-outline-primary " th:text="Register">Register</button>
+        </a> or
+        <a class=""  th:href="@{/login}">
+        	<button type="button"  class="btn  btn-sm btn-outline-primary " th:text="Login">Login</button>
+        </a>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

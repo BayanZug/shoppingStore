@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="html_head(pageTitle)">
+<meta charset="ISO-8859-1"  >
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>[[${pageTitle}]]</title>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{~/assets/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{~/assets/css/fontawesome/css/all.css}">
+
+<style type="text/css">
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+.pageLink {
+	display: inline-block;
+	border-radius: 10px;
+	background: #64497d;
+	font-style: normal;
+	color: #fff;
+	padding: .2em 1em;
+}
+
+.pageLink:hover {
+	background: #fff;
+	font-style: normal;
+	color: #64497d;;
+}
+
+.barcode_img {
+	width: 20em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.line-through {
+	text-decoration: line-through;
+}
+
+.discount {
+	position: relative;
+}
+
+.triangle {
+	position: absolute;
+}
+
+.cart {
+	position: fixed;
+	bottom: 2%;
+	right: 2%;
+	border-radius: 10px;
+	background: #64497d;
+}
+
+.bg-dark {
+	background-color: #64497d !important;
+}
+
+.btn-outline-primary:hover {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+}
+
+.btn-outline-primary {
+	color: #64497d;
+	background-color: #fff;
+	border-color: #64497d;
+}
+
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+	box-shadow: 0 0 0 0.2rem rgb(100, 73, 125);
+}
+
+.btn-primary:focus, .btn-primary.focus {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+	box-shadow: 0 0 0 0.2rem rgb(100, 73, 125);
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+}
+
+.btn-primary:hover {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+}
+
+.table .thead-dark th {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #454d55;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+	.show>.btn-primary.dropdown-toggle {
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+	.btn-outline-primary:not(:disabled):not(.disabled).active, .show>.btn-outline-primary.dropdown-toggle
+	{
+	color: #fff;
+	background-color: #64497d;
+	border-color: #64497d;
+}
+
+.card-img-top {
+	height: 270px;
+	width: fit-content;
+	align-self: center;
+}
+</style>
+
+</head>
+<body>
+	<th:block th:fragment="header">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" th:href="@{/}">Shop</a>
+			<button class="navbar-toggle navbar-toggler" type="button"
+				data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home</a></li>
+					<li sec:authorize="hasRole('ADMIN')" class="nav-item"><a
+						class="nav-link" th:href="@{/admin/list}">Products</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/shoppingCart}">Shopping Cart</a></li>
+					<li sec:authorize="hasRole('ADMIN')" class="nav-item"><a
+						class="nav-link" th:href="@{/admin/new}">Create a New Product</a></li>
+					<li sec:authorize="hasRole('ADMIN')" class="nav-item"><a
+						class="nav-link" th:href="@{/admin/payments}">Payments</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a
+						class="nav-link" th:href="@{/registration}">Register</a></li>
+
+				</ul>
+				<form sec:authorize="!isAuthenticated()"
+					class="form-inline my-2 my-lg-0 text-light" th:action="@{/login}"
+					method="get">
+					<input class="btn btn-sm btn-light" type="submit" value="Login" />
+				</form>
+
+				<form sec:authorize="isAuthenticated()"
+					class="form-inline my-2 my-lg-0 text-light" th:action="@{/logout}"
+					method="post">
+					<b><span sec:authentication="name">Username</span></b> &nbsp;
+					&nbsp; &nbsp; &nbsp; &nbsp; <input
+						class="btn btn-sm btn-light mr-2" type="submit" value="Logout" />
+				</form>
+				<form th:action="@{/}" class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" name="searchString"
+						type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-sm btn-outline-primary my-2 my-sm-0"
+						type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
+		<script type="text/javascript" th:src="@{~/assets/js/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{~/assets/js/bootstrap.min.js}"></script>
+
+	</th:block>
+	<th:block th:fragment="footer">
+		<a th:href="@{/shoppingCart}"><button
+				class="btn btn-sm btn-primary cart">
+				<i class="fas fa-shopping-cart"></i> Cart
+			</button></a>
+	</th:block>
+</body>
+</html>

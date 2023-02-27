@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org">
+<head
+	th:replace="fragments :: html_head(pageTitle='Product Manager - Home')" />
+<body>
+	<div th:replace="fragments :: header"></div>
+
+	<div class="container-fluid text-center">
+						<div th:replace="/fragments/feature :: featured" ></div>
+		
+	
+	
+		<div th:replace="/fragments/products :: products" >
+</div>
+		<div th:replace="/fragments/pagination :: pagination(URLparameter='')" ></div>
+		<!-- 	<div> -->
+		<!-- 	</div> -->
+	</div>
+	
+			<footer th:replace="fragments :: footer" ></footer>
+	
+</body>
+</html>
